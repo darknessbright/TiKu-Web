@@ -1,0 +1,13 @@
+{
+  "appId": "org.questionbank.questionbank",
+  "appName": "题库练习",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "buildOptions": {
+      "releaseType": "APK"
+    }
+  }
+}

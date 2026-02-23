@@ -1,0 +1,483 @@
+/* 题库练习APP - 样式文件 */
+
+/* ==================== 基础样式 ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* 颜色定义 */
+    --bg-color: #f5f5fa;
+    --card-bg: #ffffff;
+    --primary-color: #3380e6;
+    --primary-hover: #2868c4;
+    --title-color: #3380cc;
+    --text-color: #333333;
+    --text-secondary: #808080;
+    --border-color: #d9d9d9;
+    --success-color: #33bf4d;
+    --error-color: #e64040;
+    --danger-bg: #f2d9d9;
+    --danger-text: #b33333;
+
+    /* 字体大小 - 默认中等 */
+    --font-page-title: 26px;
+    --font-card-title: 20px;
+    --font-primary-btn: 22px;
+    --font-secondary-btn: 18px;
+    --font-question: 24px;
+    --font-option: 20px;
+    --font-body: 18px;
+    --font-hint: 14px;
+}
+
+/* 字体大小变体 */
+.font-small {
+    --font-page-title: 20px;
+    --font-card-title: 15px;
+    --font-primary-btn: 16px;
+    --font-secondary-btn: 14px;
+    --font-question: 18px;
+    --font-option: 15px;
+    --font-body: 14px;
+    --font-hint: 12px;
+}
+
+.font-large {
+    --font-page-title: 32px;
+    --font-card-title: 24px;
+    --font-primary-btn: 26px;
+    --font-secondary-btn: 22px;
+    --font-question: 28px;
+    --font-option: 24px;
+    --font-body: 22px;
+    --font-hint: 18px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+    max-width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+.screen {
+    min-height: 100vh;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==================== 按钮样式 ==================== */
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: var(--font-secondary-btn);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover, .btn-primary:active {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover, .btn-secondary:active {
+    background-color: #f0f0f0;
+}
+
+.btn-outline {
+    background-color: #f2f2f2;
+    color: var(--text-secondary);
+}
+
+.btn-outline:hover, .btn-outline:active {
+    background-color: #e6e6e6;
+}
+
+.btn-danger {
+    background-color: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+.btn-large {
+    font-size: var(--font-primary-btn);
+    padding: 15px 20px;
+    border-radius: 10px;
+}
+
+.btn-small {
+    font-size: var(--font-hint);
+    padding: 8px 15px;
+}
+
+.btn-full {
+    width: 100%;
+    margin-top: auto;
+}
+
+.btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* ==================== 首页样式 ==================== */
+#home-screen {
+    padding: 0;
+}
+
+.logo-container {
+    height: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: linear-gradient(180deg, var(--bg-color) 0%, var(--card-bg) 100%);
+}
+
+.logo {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+    border-radius: 15px;
+}
+
+.home-content {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title-section {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.title-section h1 {
+    font-size: var(--font-page-title);
+    color: var(--title-color);
+    margin-bottom: 5px;
+}
+
+.progress-text {
+    font-size: var(--font-hint);
+    color: var(--text-secondary);
+}
+
+.hint-text {
+    font-size: var(--font-hint);
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 5px 0;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bottom-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.bottom-buttons .btn {
+    flex: 1;
+}
+
+/* ==================== 练习页样式 ==================== */
+.question-header {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.question-header span {
+    font-size: var(--font-body);
+    color: var(--title-color);
+    font-weight: bold;
+}
+
+.question-container {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.question-container p {
+    font-size: var(--font-question);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.options-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding: 5px 0;
+}
+
+.option-btn {
+    background-color: var(--card-bg);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: var(--font-option);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+    background-color: #f5f8ff;
+}
+
+.option-btn.selected {
+    border-color: var(--primary-color);
+    background-color: #e6f0ff;
+}
+
+.option-btn.correct {
+    border-color: var(--success-color);
+    background-color: #e6ffec;
+}
+
+.option-btn.wrong {
+    border-color: var(--error-color);
+    background-color: #ffe6e6;
+}
+
+.feedback-container {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-container p {
+    font-size: var(--font-body);
+}
+
+.feedback-container .correct {
+    color: var(--success-color);
+}
+
+.feedback-container .wrong {
+    color: var(--error-color);
+}
+
+.practice-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.practice-buttons .btn {
+    flex: 1;
+}
+
+/* ==================== 错题本样式 ==================== */
+.screen-header {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.screen-header h1 {
+    font-size: var(--font-page-title);
+    color: var(--title-color);
+}
+
+.screen-header span {
+    font-size: var(--font-hint);
+    color: var(--text-secondary);
+}
+
+.mistakes-list {
+    flex: 1;
+    overflow-y: auto;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
+}
+
+.mistake-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mistake-item:last-child {
+    border-bottom: none;
+}
+
+.mistake-item .question-preview {
+    flex: 1;
+    font-size: var(--font-body);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mistake-item .remove-btn {
+    background: none;
+    border: none;
+    color: var(--error-color);
+    font-size: var(--font-hint);
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.add-mistake-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.add-mistake-section input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: var(--font-body);
+}
+
+/* ==================== 设置页样式 ==================== */
+.settings-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.settings-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.settings-card h3 {
+    font-size: var(--font-card-title);
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.daily-progress {
+    font-size: var(--font-body);
+    color: var(--title-color);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.target-setting {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.target-setting label {
+    font-size: var(--font-hint);
+    color: var(--text-secondary);
+}
+
+.target-setting input {
+    width: 60px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: var(--font-hint);
+    text-align: center;
+}
+
+.target-setting span {
+    font-size: var(--font-hint);
+    color: var(--text-secondary);
+}
+
+.font-size-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.font-size-buttons .btn {
+    flex: 1;
+    max-width: 70px;
+}
+
+.stats-list p {
+    font-size: var(--font-hint);
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.danger-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+}
+
+/* ==================== 响应式调整 ==================== */
+@media (min-width: 500px) {
+    #app {
+        max-width: 400px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+}
+
+/* ==================== 空状态 ==================== */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state p {
+    font-size: var(--font-body);
+}

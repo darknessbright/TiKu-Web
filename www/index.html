@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>题库练习</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 首页 -->
+        <div id="home-screen" class="screen">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo" class="logo">
+            </div>
+            <div class="home-content">
+                <div class="title-section">
+                    <h1>题库练习</h1>
+                    <p class="progress-text" id="home-daily-progress">今日进度: 0 / 100 题</p>
+                </div>
+
+                <button class="btn btn-primary btn-large" id="btn-continue">
+                    继续练习
+                </button>
+                <p class="hint-text" id="last-position-hint">(上次: 第0题)</p>
+
+                <div class="divider"></div>
+
+                <div class="menu-buttons">
+                    <button class="btn btn-secondary" id="btn-sequential">顺序练习</button>
+                    <button class="btn btn-secondary" id="btn-random">乱序练习</button>
+                    <button class="btn btn-secondary" id="btn-mistakes-practice">错题专项</button>
+                </div>
+
+                <div class="bottom-buttons">
+                    <button class="btn btn-outline" id="btn-mistakes">错题本</button>
+                    <button class="btn btn-outline" id="btn-settings">设置</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习页 -->
+        <div id="practice-screen" class="screen" style="display: none;">
+            <div class="question-header">
+                <span id="question-number">第 1 题 / 共 2163 题</span>
+            </div>
+
+            <div class="question-container">
+                <p id="question-text">题目内容</p>
+            </div>
+
+            <div class="options-container" id="options-container">
+                <!-- 选项动态生成 -->
+            </div>
+
+            <div class="feedback-container">
+                <p id="feedback-text"></p>
+            </div>
+
+            <div class="practice-buttons">
+                <button class="btn btn-secondary" id="btn-prev">上一题</button>
+                <button class="btn btn-primary" id="btn-next">下一题</button>
+            </div>
+
+            <button class="btn btn-outline btn-full" id="btn-home-from-practice">返回首页</button>
+        </div>
+
+        <!-- 错题本 -->
+        <div id="mistakes-screen" class="screen" style="display: none;">
+            <div class="screen-header">
+                <h1>错题本</h1>
+                <span id="mistakes-count">共 0 道错题</span>
+            </div>
+
+            <div class="mistakes-list" id="mistakes-list">
+                <!-- 错题列表动态生成 -->
+            </div>
+
+            <div class="add-mistake-section">
+                <input type="number" id="add-mistake-input" placeholder="输入题号添加错题" min="1">
+                <button class="btn btn-primary" id="btn-add-mistake">添加</button>
+            </div>
+
+            <button class="btn btn-outline btn-full" id="btn-home-from-mistakes">返回首页</button>
+        </div>
+
+        <!-- 设置页 -->
+        <div id="settings-screen" class="screen" style="display: none;">
+            <div class="screen-header">
+                <h1>设置</h1>
+            </div>
+
+            <div class="settings-content">
+                <!-- 每日计划 -->
+                <div class="settings-card">
+                    <h3>每日刷题计划</h3>
+                    <p class="daily-progress" id="settings-daily-progress">今日: 0 / 100</p>
+                    <div class="target-setting">
+                        <label>目标:</label>
+                        <input type="number" id="target-input" min="1" max="2163" value="100">
+                        <span>题</span>
+                        <button class="btn btn-small" id="btn-save-target">保存</button>
+                    </div>
+                </div>
+
+                <!-- 字体大小 -->
+                <div class="settings-card">
+                    <h3>字体大小</h3>
+                    <div class="font-size-buttons">
+                        <button class="btn btn-outline" data-size="small">小</button>
+                        <button class="btn btn-outline active" data-size="medium">中</button>
+                        <button class="btn btn-outline" data-size="large">大</button>
+                    </div>
+                </div>
+
+                <!-- 学习统计 -->
+                <div class="settings-card">
+                    <h3>学习统计</h3>
+                    <div class="stats-list">
+                        <p>总题数: <span id="stats-total">2163</span></p>
+                        <p>已练习: <span id="stats-practiced">0</span></p>
+                        <p>正确率: <span id="stats-rate">0%</span></p>
+                        <p>错题数: <span id="stats-mistakes">0</span></p>
+                    </div>
+                </div>
+
+                <!-- 清除数据 -->
+                <div class="danger-zone">
+                    <button class="btn btn-danger" id="btn-clear-progress">清除所有进度</button>
+                    <button class="btn btn-danger" id="btn-clear-mistakes">清空错题本</button>
+                </div>
+            </div>
+
+            <button class="btn btn-outline btn-full" id="btn-home-from-settings">返回首页</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
