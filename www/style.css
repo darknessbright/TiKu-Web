@@ -230,6 +230,20 @@ body {
     font-weight: bold;
 }
 
+/* 顺序模式下题号可点击 */
+.question-header.clickable {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.question-header.clickable:hover {
+    background-color: #f0f5ff;
+}
+
+.question-header.clickable:active {
+    background-color: #e6f0ff;
+}
+
 .question-container {
     background-color: var(--card-bg);
     border-radius: 10px;

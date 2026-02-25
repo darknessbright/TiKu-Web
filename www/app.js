@@ -264,6 +264,14 @@ function displayQuestion() {
     document.getElementById('question-number').textContent =
         `第 ${AppState.currentIndex + 1} 题 / 共 ${AppState.questionOrder.length} 题`;
 
+    // 顺序模式下题号可点击跳转
+    const questionHeader = document.querySelector('.question-header');
+    if (AppState.mode === 'sequential') {
+        questionHeader.classList.add('clickable');
+    } else {
+        questionHeader.classList.remove('clickable');
+    }
+
     // 更新题目内容
     document.getElementById('question-text').textContent = question.question;
 
@@ -345,6 +353,22 @@ function submitAnswer() {
 }
 
 function setupPracticeEvents() {
+    // 点击题号跳转（仅顺序模式）
+    document.getElementById('question-number').addEventListener('click', () => {
+        if (AppState.mode === 'sequential') {
+            const input = prompt(`请输入要跳转的题号 (1 - ${AppState.questionOrder.length}):`);
+            if (input !== null) {
+                const targetNum = parseInt(input);
+                if (!isNaN(targetNum) && targetNum >= 1 && targetNum <= AppState.questionOrder.length) {
+                    AppState.currentIndex = targetNum - 1;
+                    displayQuestion();
+                } else if (input.trim() !== '') {
+                    alert(`请输入有效的题号 (1 - ${AppState.questionOrder.length})`);
+                }
+            }
+        }
+    });
+
     // 上一题
     document.getElementById('btn-prev').addEventListener('click', () => {
         if (AppState.currentIndex > 0) {
