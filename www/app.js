@@ -144,7 +144,7 @@ const AppState = {
     currentIndex: 0,           // 当前题目索引
     questionOrder: [],         // 题目顺序（支持乱序）
     mode: 'sequential',        // 练习模式: sequential, random, mistakes
-    selectedOption: null,      // 当前选中的选项
+    selectedOptions: [],       // 当前选中的选项（支持多选）
     answered: false,           // 是否已答题
     mistakesList: []           // 错题专项模式的题目列表
 };
@@ -222,7 +222,7 @@ function setupHomeEvents() {
 function startPractice(mode, startIndex) {
     AppState.mode = mode;
     AppState.currentIndex = startIndex;
-    AppState.selectedOption = null;
+    AppState.selectedOptions = [];
     AppState.answered = false;
 
     // 准备题目顺序
@@ -272,8 +272,9 @@ function displayQuestion() {
         questionHeader.classList.remove('clickable');
     }
 
-    // 更新题目内容
-    document.getElementById('question-text').textContent = question.question;
+    // 更新题目内容（添加题型标签）
+    const typeLabel = question.is_multiple ? '【多选题】' : '【单选题】';
+    document.getElementById('question-text').textContent = typeLabel + question.question;
 
     // 生成选项
     const optionsContainer = document.getElementById('options-container');
@@ -292,35 +293,60 @@ function displayQuestion() {
     });
 
     // 重置状态
-    AppState.selectedOption = null;
+    AppState.selectedOptions = [];
     AppState.answered = false;
     document.getElementById('feedback-text').textContent = '';
     document.getElementById('feedback-text').className = '';
+    updateSubmitButton();
 }
 
 function selectOption(option) {
     if (AppState.answered) return;
 
-    // 更新选中状态
-    document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-        if (btn.dataset.option === option) {
-            btn.classList.add('selected');
-        }
-    });
+    const questionId = AppState.questionOrder[AppState.currentIndex];
+    const question = getQuestionById(questionId);
 
-    AppState.selectedOption = option;
-    submitAnswer();
+    if (question.is_multiple) {
+        // 多选题：切换选中状态
+        const index = AppState.selectedOptions.indexOf(option);
+        if (index > -1) {
+            // 已选中则取消
+            AppState.selectedOptions.splice(index, 1);
+        } else {
+            // 未选中则添加
+            AppState.selectedOptions.push(option);
+        }
+        // 更新UI选中状态
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.classList.toggle('selected', AppState.selectedOptions.includes(btn.dataset.option));
+        });
+        updateSubmitButton();
+    } else {
+        // 单选题：保持原有行为
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn.dataset.option === option) {
+                btn.classList.add('selected');
+            }
+        });
+        AppState.selectedOptions = [option];
+        submitAnswer();
+    }
 }
 
 function submitAnswer() {
-    if (AppState.answered || !AppState.selectedOption) return;
+    if (AppState.answered || AppState.selectedOptions.length === 0) return;
 
     AppState.answered = true;
 
     const questionId = AppState.questionOrder[AppState.currentIndex];
     const question = getQuestionById(questionId);
-    const isCorrect = AppState.selectedOption === question.answer;
+
+    // 将用户选择的选项排序后拼接成字符串进行比较
+    const userAnswer = AppState.selectedOptions.slice().sort().join('');
+    const correctAnswer = question.answer;
+    const correctOptions = correctAnswer.split('');
+    const isCorrect = userAnswer === correctAnswer;
 
     // 记录答题结果
     DataManager.recordAnswer(questionId, isCorrect);
@@ -330,16 +356,32 @@ function submitAnswer() {
         DataManager.addMistake(questionId);
     }
 
-    // 显示结果
+    // 显示结果（多选题提供更详细的错误提示）
     const feedbackText = document.getElementById('feedback-text');
-    feedbackText.textContent = isCorrect ? '✓ 正确!' : `✗ 错误! 正确答案是 ${question.answer}`;
+    if (isCorrect) {
+        feedbackText.textContent = '✓ 正确!';
+    } else {
+        const userWrongOptions = AppState.selectedOptions.filter(opt => !correctOptions.includes(opt));
+        const missedOptions = correctOptions.filter(opt => !AppState.selectedOptions.includes(opt));
+
+        let errorMsg = '✗ 错误! ';
+        if (userWrongOptions.length > 0 && missedOptions.length > 0) {
+            errorMsg += `多选了 ${userWrongOptions.join('')}，漏选了 ${missedOptions.join('')}。`;
+        } else if (userWrongOptions.length > 0) {
+            errorMsg += `多选了 ${userWrongOptions.join('')}。`;
+        } else if (missedOptions.length > 0) {
+            errorMsg += `漏选了 ${missedOptions.join('')}。`;
+        }
+        errorMsg += ` 正确答案: ${correctAnswer}`;
+        feedbackText.textContent = errorMsg;
+    }
     feedbackText.className = isCorrect ? 'correct' : 'wrong';
 
     // 高亮选项
     document.querySelectorAll('.option-btn').forEach(btn => {
-        if (btn.dataset.option === question.answer) {
+        if (correctOptions.includes(btn.dataset.option)) {
             btn.classList.add('correct');
-        } else if (btn.dataset.option === AppState.selectedOption) {
+        } else if (AppState.selectedOptions.includes(btn.dataset.option)) {
             btn.classList.add('wrong');
         }
     });
@@ -350,9 +392,31 @@ function submitAnswer() {
         progress.lastPosition = AppState.currentIndex;
         DataManager.saveProgress(progress);
     }
+
+    // 隐藏提交按钮
+    updateSubmitButton();
+}
+
+// 更新提交按钮状态
+function updateSubmitButton() {
+    const submitBtn = document.getElementById('btn-submit');
+    const questionId = AppState.questionOrder[AppState.currentIndex];
+    const question = getQuestionById(questionId);
+
+    // 只对多选题显示提交按钮
+    if (question && question.is_multiple && !AppState.answered) {
+        submitBtn.style.display = AppState.selectedOptions.length > 0 ? 'block' : 'none';
+    } else {
+        submitBtn.style.display = 'none';
+    }
 }
 
 function setupPracticeEvents() {
+    // 提交按钮（多选题使用）
+    document.getElementById('btn-submit').addEventListener('click', () => {
+        submitAnswer();
+    });
+
     // 点击题号跳转（仅顺序模式）
     document.getElementById('question-number').addEventListener('click', () => {
         if (AppState.mode === 'sequential') {
